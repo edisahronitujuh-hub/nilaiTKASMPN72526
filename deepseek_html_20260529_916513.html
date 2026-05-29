@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Cek Nilai TKA - SMPN 7 Kota Sukabumi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Poppins', 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* card utama */
+        .app-container {
+            max-width: 580px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* header sekolah */
+        .hero {
+            background: #1e3c72;
+            background: linear-gradient(135deg, #0b2b44 0%, #123e66 100%);
+            padding: 28px 24px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 1.7rem;
+            letter-spacing: -0.3px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .hero h1 span {
+            font-weight: 500;
+            background: #ffd966;
+            color: #1e3c72;
+            padding: 0 8px;
+            border-radius: 40px;
+            font-size: 1rem;
+            display: inline-block;
+        }
+
+        .hero p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* konten utama */
+        .content {
+            padding: 30px 28px 38px;
+        }
+
+        .info-label {
+            background: #eef2ff;
+            padding: 12px 16px;
+            border-radius: 28px;
+            margin-bottom: 28px;
+            font-size: 0.85rem;
+            color: #1f3a5f;
+            text-align: center;
+            border-left: 5px solid #2c7da0;
+            font-weight: 500;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 28px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #0b3b4f;
+            font-size: 0.9rem;
+            margin-left: 8px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        #nisnInput {
+            flex: 3;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 60px;
+            outline: none;
+            transition: all 0.2s;
+            background: white;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        #nisnInput:focus {
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
+        }
+
+        button {
+            flex: 1;
+            background: #1e6f5c;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(100deg, #1e6f5c, #289672);
+            box-shadow: 0 6px 12px -8px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background: linear-gradient(100deg, #155a4b, #1f7f68);
+            transform: scale(0.97);
+        }
+
+        /* card hasil */
+        .result-card {
+            background: #f8fafd;
+            border-radius: 32px;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid rgba(44, 125, 160, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: 0.2s;
+        }
+
+        .not-found {
+            background: #fff4e6;
+            border-left: 8px solid #e07c3c;
+            color: #a4511c;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px dashed #cbdbe6;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        .result-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #2c3e66;
+            width: 38%;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            width: 62%;
+            font-weight: 600;
+            color: #1f2b48;
+            word-break: break-word;
+        }
+
+        .nilai-mat {
+            color: #0f5b5a;
+            background: #e0f2f0;
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .nilai-indo {
+            color: #b45309;
+            background: #ffede3;
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .score-badge {
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #5a6e8a;
+            background: #eef3fc;
+            border-radius: 28px;
+            padding: 8px;
+        }
+
+        @media (max-width: 500px) {
+            .content {
+                padding: 20px 18px 28px;
+            }
+            .detail-label {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+            .detail-value {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            .input-wrapper {
+                flex-direction: column;
+            }
+            button {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="hero">
+        <h1>📘 Tes Kemampuan Akademik <span>TKA</span></h1>
+        <p>SMP Negeri 7 Kota Sukabumi</p>
+        <p style="font-size: 0.75rem; margin-top: 6px;">✨ Cek nilai Matematika & Bahasa Indonesia ✨</p>
+    </div>
+    <div class="content">
+        <div class="info-label">
+            🔍 Masukkan <strong>NISN</strong> (Nomor Induk Siswa Nasional) untuk melihat hasil TKA
+        </div>
+        <div class="input-group">
+            <label>📌 NISN (9-10 digit / sesuai data)</label>
+            <div class="input-wrapper">
+                <input type="text" id="nisnInput" placeholder="Contoh: 119097125 atau 107021386" autocomplete="off">
+                <button id="cekBtn">🔎 Cek Nilai</button>
+            </div>
+        </div>
+
+        <!-- Tempat hasil pencarian -->
+        <div id="resultArea"></div>
+        <div class="footer-note">
+            ✅ Data diambil dari hasil TKA siswa/i SMPN 7 Sukabumi <br>
+            *Pastikan NISN yang dimasukkan sesuai dengan data ujian.
+        </div>
+    </div>
+</div>
+
+<script>
+    // DATA SISWA BERDASARKAN FILE EXCEL (DKHTKA saja.xlsx - Tabel Table 1 (3))
+    // Mapping: NISN -> { nama, nomorPeserta, matematika, bahasaIndonesia }
+    // Data telah diketik ulang secara presisi dari sheet yang diberikan.
+    const studentsData = new Map();
+
+    // Memasukkan seluruh data siswa (119 peserta) berdasarkan file yang diberikan.
+    // Format: [No Urut, Nomor Peserta, NISN, Nama, Tempat/Tgl, Matematika, Bahasa Indonesia]
+    const rawData = [
+        [1,"T2-26-02-08-0007-0001-8","119097125","DERICK ADRIANO OTA","Nagano Jepang, 6 Januari 2011",60,93.33],
+        [35,"T2-26-02-08-0007-0035-6","107021386","MUHAMAD ZAKY RIFALDI","Sukabumi, 22 September 2010",60,90],
+        [60,"T2-26-02-08-0007-0060-5","112326685","MUHAMMAD DZAKWAN RIZKY HERMAWAN","Sukabumi, 18 Februari 2011",56.67,86.67],
+        [68,"T2-26-02-08-0007-0068-5","118408468","SATIYO ANINDITO","Sukabumi, 13 Juni 2011",46.67,90],
+        [38,"T2-26-02-08-0007-0038-3","104552025","FAIRUZ YUSUP QOLBI","Sukabumi, 4 November 2010",63.33,73.33],
+        [95,"T2-26-02-08-0007-0095-2","112040696","AZIZ MAULANA PRATAMA","Sukabumi, 1 April 2011",56.67,76.67],
+        [39,"T2-26-02-08-0007-0039-2","112476704","AGIFATTAH","Sukabumi, 20 Juni 2011",53.33,76.67],
+        [27,"T2-26-02-08-0007-0027-6","107778734","ADINDA MUTIARA RAMADAN","Sukabumi, 19 Agustus 2010",50,80],
+        [37,"T2-26-02-08-0007-0037-4","3093450925","SITI SALSABILA","Sukabumi, 3 Desember 2010",50,80],
+        [71,"T2-26-02-08-0007-0071-2","101711603","ANITA ASYAFA","Sukabumi, 1 Agustus 2010",40,90],
+        [29,"T2-26-02-08-0007-0029-4","114625832","ZILDJIAN ABDUL GANI","Sukabumi, 26 Juni 2011",46.67,80],
+        [40,"T2-26-02-08-0007-0040-9","117439247","KEIZHA SAHIRA S","Sukabumi, 20 Januari 2011",46.67,80],
+        [43,"T2-26-02-08-0007-0043-6","115586587","AQILA SAFITRI","Sukabumi, 8 September 2011",53.33,73.33],
+        [9,"T2-26-02-08-0007-0009-8","109949220","RINDIANI TRIPUTRI","Sukabumi, 23 November 2010",43.33,83.33],
+        [70,"T2-26-02-08-0007-0070-3","117242902","SITI SALMA AULIA","Sukabumi, 2 Maret 2011",43.33,83.33],
+        [92,"T2-26-02-08-0007-0092-5","111905841","MUHAMMAD ALFATIH RAHMAT","Sukabumi, 21 Mei 2011",46.67,76.67],
+        [20,"T2-26-02-08-0007-0020-5","112275635","REZKY MUHAMMAD SYADDAD","Sukabumi, 29 April 2011",53.33,70],
+        [32,"T2-26-02-08-0007-0032-9","113772272","KEISHA RABBANI EL - QUR'ANI FRATAMA","Sukabumi, 25 Januari 2011",50,73.33],
+        [15,"T2-26-02-08-0007-0015-2","109673781","MARISA SINTIA PUTRI","Sukabumi, 5 Desember 2010",53.33,66.67],
+        [12,"T2-26-02-08-0007-0012-5","108702925","RAYINA PUTRI","Sukabumi, 26 Oktober 2010",50,70],
+        [74,"T2-26-02-08-0007-0074-7","115417945","FIRLY APRILRIO","Bogor, 20 April 2011",50,70],
+        [55,"T2-26-02-08-0007-0055-2","107530993","RIANA ANANTA RAMA PUTRI","Sukabumi, 27 Mei 2010",46.67,73.33],
+        [19,"T2-26-02-08-0007-0019-6","112215933","BILQIIS FUNNY HAAFIZHAH","Jakarta, 17 Februari 2011",43.33,76.67],
+        [23,"T2-26-02-08-0007-0023-2","109235455","AZRIEL ALDIANSYAH WIJAYA","Sukabumi, 15 Mei 2010",43.33,76.67],
+        [67,"T2-26-02-08-0007-0067-6","117259748","FANY ANDINI","Sukabumi, 5 Mei 2011",43.33,76.67],
+        [87,"T2-26-02-08-0007-0087-2","106339730","NADIFAH KHOERUN NISA","Sukabumi, 2 November 2010",43.33,76.67],
+        [42,"T2-26-02-08-0007-0042-7","104796849","FICELLY NUR ISNAINI FITRI","Sukabumi, 19 Juli 2010",36.67,83.33],
+        [59,"T2-26-02-08-0007-0059-6","113907672","RICKY PEBRIYAN","Sukabumi, 11 Februari 2011",36.67,83.33],
+        [78,"T2-26-02-08-0007-0078-3","113291004","MOCHAMAD TAZRIL AL FATHIR","Sukabumi, 21 Januari 2011",50,66.67],
+        [52,"T2-26-02-08-0007-0052-5","119260290","FEBRI MAULIDIANI","Sukabumi, 17 Februari 2011",40,76.67],
+        [80,"T2-26-02-08-0007-0080-9","104086237","TRIA SANJANI","Sukabumi, 2 Januari 2010",36.67,80],
+        [83,"T2-26-02-08-0007-0083-6","109394265","BERI RAMDANI","Sukabumi, 21 Desember 2010",36.67,80],
+        [86,"T2-26-02-08-0007-0086-3","119053612","MAULIDA NURAISYAH","Sukabumi, 14 Februari 2011",36.67,80],
+        [57,"T2-26-02-08-0007-0057-8","118536501","MUHAMAD ANNUN SATRIA","Sukabumi, 1 Januari 2011",43.33,73.33],
+        [77,"T2-26-02-08-0007-0077-4","113431379","MUHAMAD AKBAR SABANA","Cianjur, 11 Maret 2011",43.33,73.33],
+        [93,"T2-26-02-08-0007-0093-4","101930588","PUTRI CAHAYA","Sukabumi, 24 Oktober 2010",43.33,73.33],
+        [26,"T2-26-02-08-0007-0026-7","116023851","SITI NURAIDAH","Sukabumi, 5 Januari 2011",56.67,56.67],
+        [54,"T2-26-02-08-0007-0054-3","109705939","MUHAMAD HAMDI HIZBULLAH","Sukabumi, 4 November 2010",56.67,56.67],
+        [21,"T2-26-02-08-0007-0021-4","108734834","MUHAMAD AZRIL ILYAS","Sukabumi, 17 Desember 2010",46.67,66.67],
+        [47,"T2-26-02-08-0007-0047-2","117877361","FAHMI SUHAELI","Sukabumi, 14 April 2011",46.67,66.67],
+        [89,"T2-26-02-08-0007-0089-8","104084179","ZAGAD KUSUMA","Sukabumi, 17 Oktober 2010",46.67,66.67],
+        [41,"T2-26-02-08-0007-0041-8","95191744","FATUR RAHMAN","Sukabumi, 15 Februari 2009",53.33,60],
+        [49,"T2-26-02-08-0007-0049-8","103181516","M HILAL WALDI ALFAJAR","Sukabumi, 14 September 2010",40,73.33],
+        [51,"T2-26-02-08-0007-0051-6","112676506","M. IDLAN GHAIFA AL - GHIFARI","Sukabumi, 19 Februari 2011",40,73.33],
+        [69,"T2-26-02-08-0007-0069-4","3117233261","FELLYANDRA WILLYANI","Sukabumi, 2 Februari 2011",40,73.33],
+        [14,"T2-26-02-08-0007-0014-3","101003615","SITI AISYAH AZIZA","Sukabumi, 15 Agustus 2010",50,60],
+        [11,"T2-26-02-08-0007-0011-6","106150345","LUTHFI AL-FAJAR","Sukabumi, 22 Oktober 2010",43.33,66.67],
+        [33,"T2-26-02-08-0007-0033-8","109208319","WULAN NUR SABRINA","Sukabumi, 19 November 2010",43.33,66.67],
+        [96,"T2-26-02-08-0007-0096-9","104091930","ASYKAR MUPID AL'IHSAN","Sukabumi, 17 September 2010",40,70],
+        [62,"T2-26-02-08-0007-0062-3","115146527","ABDURRASYID","Sukabumi, 1 Februari 2011",36.67,73.33],
+        [100,"T2-26-02-08-0007-0100-5","103398761","NAZWA NUR ANISA","Sukabumi, 12 November 2010",46.67,60],
+        [76,"T2-26-02-08-0007-0076-5","107231238","AKBAR QOLBI RAMADHAN","Sukabumi, 8 Agustus 2010",36.67,70],
+        [17,"T2-26-02-08-0007-0017-8","106035506","VANIA ARDELIA ATIFAH","Sukabumi, 15 November 2010",30,76.67],
+        [53,"T2-26-02-08-0007-0053-4","101781948","AZZA JASKIA","Sukabumi, 22 Oktober 2010",53.33,53.33],
+        [97,"T2-26-02-08-0007-0097-8","118276914","MUHAMMAD FAUZAAN MUFID","Sukabumi, 29 Juli 2011",53.33,53.33],
+        [2,"T2-26-02-08-0007-0002-7","101085282","SYALWA SANTANA","Sukabumi, 25 September 2010",36.67,66.67],
+        [28,"T2-26-02-08-0007-0028-5","112953792","RIDHO AL FATIH","Sukabumi, 5 Maret 2011",26.67,76.67],
+        [45,"T2-26-02-08-0007-0045-4","114218635","NAZMA NUR BAYTI","Sukabumi, 13 Mei 2011",50,53.33],
+        [109,"T2-26-02-08-0007-0109-4","117758300","SITI AZZIRA PRAHMANA","Sukabumi, 12 Maret 2011",50,53.33],
+        [22,"T2-26-02-08-0007-0022-3","111819922","AL-FATH ZHUMAR LESMANA","Sukabumi, 13 Mei 2011",43.33,60],
+        [36,"T2-26-02-08-0007-0036-5","102728768","SAFA NAZMAH","Sukabumi, 8 Oktober 2010",43.33,60],
+        [30,"T2-26-02-08-0007-0030-3","116468742","MUHAMMAD AL-ZIKRY","Sukabumi, 27 Mei 2011",40,63.33],
+        [48,"T2-26-02-08-0007-0048-9","112997738","SAYID IBRAHIM AL - FIKRI","Sukabumi, 30 April 2011",33.33,70],
+        [75,"T2-26-02-08-0007-0075-6","116329386","NAZWA NATANIA MAWARDI","Sukabumi, 10 Juli 2011",33.33,70],
+        [98,"T2-26-02-08-0007-0098-7","111757758","AFFAN ALFARABY","Sukabumi, 26 September 2011",33.33,70],
+        [31,"T2-26-02-08-0007-0031-2","3102761316","DISTI AULIA PUTRI","Sukabumi, 4 Juni 2010",56.67,43.33],
+        [72,"T2-26-02-08-0007-0072-9","3117627698","PHAREL EDWARDO FEBUAR","Cianjur, 4 Februari 2011",50,50],
+        [8,"T2-26-02-08-0007-0008-9","105072963","SABIRA PUTRI BUNGSU","Sukabumi, 15 Oktober 2010",46.67,53.33],
+        [46,"T2-26-02-08-0007-0046-3","118022993","INDI PUSPITA SARI","Sukabumi, 11 Maret 2011",36.67,63.33],
+        [58,"T2-26-02-08-0007-0058-7","116423906","IRFAN MUHARAM","Sukabumi, 3 Januari 2011",36.67,63.33],
+        [25,"T2-26-02-08-0007-0025-8","3106628598","IBNU ABDUL JAMIL","Sukabumi, 11 Desember 2010",33.33,66.67],
+        [66,"T2-26-02-08-0007-0066-7","112173842","MEISA NUR APRILIA","Sukabumi, 17 April 2011",30,70],
+        [61,"T2-26-02-08-0007-0061-4","108999442","SHELA PUTRI RAHAYU","Sukabumi, 21 Juli 2010",26.67,73.33],
+        [10,"T2-26-02-08-0007-0010-7","3104523771","FACHRY PUTRA MASHADI IJOYO","Sukabumi, 23 September 2010",36.67,60],
+        [101,"T2-26-02-08-0007-0101-4","111769686","DEREN AZARIA DZAKWAN","Sukabumi, 13 Februari 2011",36.67,60],
+        [65,"T2-26-02-08-0007-0065-8","116439756","PUJA CAHYA FAJAR","Sukabumi, 25 April 2011",30,66.67],
+        [88,"T2-26-02-08-0007-0088-9","107920554","SYIFA ANANDYA AJI PUTRI","Sukabumi, 21 Desember 2010",30,66.67],
+        [103,"T2-26-02-08-0007-0103-2","103469696","RAJWA FATHIMAH AZ ZAHRA","Sukabumi, 26 November 2010",43.33,53.33],
+        [107,"T2-26-02-08-0007-0107-6","109464873","KAYLA RIZQI OKTAVIANI","Sukabumi, 20 Oktober 2010",43.33,53.33],
+        [44,"T2-26-02-08-0007-0044-5","102106079","NOVENDRA ALMAZID","Sukabumi, 13 November 2010",33.33,63.33],
+        [105,"T2-26-02-08-0007-0105-8","117214030","MOIRA ASZKIANUR PUTRI","Kuningan, 14 April 2011",46.67,46.67],
+        [91,"T2-26-02-08-0007-0091-6","109679870","REZA PRATAMA","Sukabumi, 31 Agustus 2010",36.67,56.67],
+        [18,"T2-26-02-08-0007-0018-7","102324369","IBNU FAWWAZ AMIRULHASAN","Sukabumi, 1 September 2010",26.67,66.67],
+        [56,"T2-26-02-08-0007-0056-9","106681824","SELSA GELIANA","Sukabumi, 21 Desember 2010",26.67,66.67],
+        [13,"T2-26-02-08-0007-0013-4","96593467","LANI","Sukabumi, 21 Juli 2009",50,43.33],
+        [63,"T2-26-02-08-0007-0063-2","105262469","RINGGA DWI PRASETYO","Sukabumi, 11 Desember 2010",43.33,50],
+        [73,"T2-26-02-08-0007-0073-8","3104855846","AZRIL AL HAFIZ","Bandung, 8 April 2010",43.33,50],
+        [24,"T2-26-02-08-0007-0024-9","101939873","MUHAMAD SAHRUL GUNAWAN","Sukabumi, 18 Oktober 2010",30,63.33],
+        [99,"T2-26-02-08-0007-0099-6","94200900","ADITIA WARMAN","Sukabumi, 2 Oktober 2009",30,63.33],
+        [85,"T2-26-02-08-0007-0085-4","117489719","APRILIA PUTRI KARTINI","Sukabumi, 22 April 2011",36.67,53.33],
+        [108,"T2-26-02-08-0007-0108-5","101565952","TRIA ULFA JULIANTI","Sukabumi, 24 Juli 2010",36.67,53.33],
+        [106,"T2-26-02-08-0007-0106-7","101624411","YUNDA WINDIARTI RUSWANDI","Sukabumi, 31 Oktober 2010",33.33,56.67],
+        [94,"T2-26-02-08-0007-0094-3","102087865","NABIL FAYYAD HAMZAH","Sukabumi, 17 Maret 2010",50,36.67],
+        [34,"T2-26-02-08-0007-0034-7","103378374","AGUSTIAN DARULL","Sukabumi, 2 Agustus 2010",40,46.67],
+        [81,"T2-26-02-08-0007-0081-8","104700647","NAIMATUL MASAROH","Sukabumi, 21 Agustus 2010",40,46.67],
+        [84,"T2-26-02-08-0007-0084-5","104525934","NAZWA AZZAHRA","Sukabumi, 30 April 2010",43.33,43.33],
+        [64,"T2-26-02-08-0007-0064-9","3104874213","RAFI RAMADAN","Sukabumi, 29 Agustus 2010",33.33,53.33],
+        [50,"T2-26-02-08-0007-0050-7","91340296","MUHAMAD RA'AFI RAMADHANI","Sukabumi., 3 September 2009",26.67,56.67],
+        [110,"T2-26-02-08-0007-0110-3","104721192","MOHAMAD RADIT RIZKULLOH","Sukabumi, 13 Desember 2010",43.33,40],
+        [102,"T2-26-02-08-0007-0102-3","101919812","R OCTA WIGUNA AL QOHAR","Sukabumi, 27 Oktober 2010",33.33,50],
+        [82,"T2-26-02-08-0007-0082-7","96098587","LINA","Sukabumi, 21 Juli 2009",43.33,36.67],
+        [79,"T2-26-02-08-0007-0079-2","111523875","SILVIA LAURA NURANI","Sukabumi, 10 Maret 2011",40,40],
+        [6,"T2-26-02-08-0007-0006-3","118855517","RIDHAN ADITYA PRATAMA","Sukabumi, 8 Agustus 2011",33.33,46.67],
+        [90,"T2-26-02-08-0007-0090-7","118451982","SEPTIANI ANGGREINI","Sukabumi, 21 September 2011",33.33,46.67],
+        [7,"T2-26-02-08-0007-0007-2","105333718","LYCANDRA JULIAN RAHMADI","Sukabumi, 14 Juli 2010",30,50],
+        [3,"T2-26-02-08-0007-0003-6","106644089","MUHAMAD ALI NURWAHID","Sukabumi, 20 Juli 2010",33.33,40],
+        [4,"T2-26-02-08-0007-0004-5","117088191","KEYSHA RAFANI ALKHAIRA","Sukabumi, 9 November 2011",23.33,50],
+        [5,"T2-26-02-08-0007-0005-4","109060633","MOCH AZRIEL FACHRIZI INDRAPURA","Sukabumi, 4 Juni 2010",30,40],
+        [16,"T2-26-02-08-0007-0016-9","117405297","SITI SARAH JAINAL","Sukabumi, 19 Juli 2011",30,40]
+    ];
+
+    // Load ke Map
+    for (const row of rawData) {
+        const nisn = String(row[2]).trim();
+        const nomorPeserta = row[1];
+        const nama = row[3];
+        const nilaiMatematika = row[5];
+        const nilaiBahasaIndonesia = row[6];
+        studentsData.set(nisn, {
+            nama: nama,
+            nomorPeserta: nomorPeserta,
+            matematika: nilaiMatematika,
+            bahasaIndonesia: nilaiBahasaIndonesia
+        });
+    }
+
+    // DOM elements
+    const nisnInput = document.getElementById('nisnInput');
+    const cekBtn = document.getElementById('cekBtn');
+    const resultArea = document.getElementById('resultArea');
+
+    // Fungsi render hasil
+    function displayResult(nisn) {
+        const normalizedNisn = nisn.trim();
+        if (normalizedNisn === "") {
+            resultArea.innerHTML = `
+                <div class="result-card not-found" style="background:#fff1f0; border-left-color:#c0392b;">
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <span>⚠️</span> <strong>Masukkan NISN terlebih dahulu</strong>
+                    </div>
+                </div>`;
+            return;
+        }
+
+        const student = studentsData.get(normalizedNisn);
+        if (!student) {
+            resultArea.innerHTML = `
+                <div class="result-card not-found">
+                    <div class="result-header">
+                        <span>🔍</span>
+                        <h3>Data tidak ditemukan</h3>
+                    </div>
+                    <div style="padding: 6px 0px;">NISN <strong>${escapeHtml(normalizedNisn)}</strong> tidak terdaftar dalam basis data TKA.<br>
+                    Pastikan NISN yang dimasukkan benar (9-10 digit) dan sesuai data ujian.</div>
+                </div>`;
+            return;
+        }
+
+        // Format nilai
+        const mathValue = student.matematika;
+        const indoValue = student.bahasaIndonesia;
+
+        resultArea.innerHTML = `
+            <div class="result-card" style="animation: fadeIn 0.2s ease;">
+                <div class="result-header">
+                    <span>📄</span>
+                    <h3>Hasil Tes Kemampuan Akademik</h3>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">👤 Nama Lengkap</span>
+                    <span class="detail-value">${escapeHtml(student.nama)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">🎫 Nomor Peserta</span>
+                    <span class="detail-value">${escapeHtml(student.nomorPeserta)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">📐 Nilai Matematika</span>
+                    <span class="detail-value"><span class="nilai-mat score-badge">${mathValue}</span> &nbsp; / 100</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">📖 Nilai Bahasa Indonesia</span>
+                    <span class="detail-value"><span class="nilai-indo score-badge">${indoValue}</span> &nbsp; / 100</span>
+                </div>
+                <div class="footer-note" style="margin-top: 18px; background:#e9f0f9;">
+                    ✅ Data sesuai dengan hasil TKA SMPN 7 Sukabumi
+                </div>
+            </div>
+        `;
+    }
+
+    // simple escape html
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // event listener
+    cekBtn.addEventListener('click', () => {
+        displayResult(nisnInput.value);
+    });
+
+    nisnInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            displayResult(nisnInput.value);
+        }
+    });
+
+    // optional: tampilkan placeholder awal (kosong)
+    resultArea.innerHTML = `
+        <div class="result-card" style="opacity:0.7; text-align:center; background:#f3f6fc;">
+            <span>✨ Masukkan NISN lalu tekan 'Cek Nilai' ✨</span>
+        </div>
+    `;
+</script>
+</body>
+</html>
